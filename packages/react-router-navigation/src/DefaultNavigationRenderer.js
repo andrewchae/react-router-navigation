@@ -2,13 +2,11 @@ import * as React from 'react'
 import { NativeModules } from 'react-native'
 import {
   Transitioner,
-  CardStack,
+  StackView,
+  StackViewTransitionConfigs,
   StackRouter,
   NavigationActions,
-  addNavigationHelpers,
 } from 'react-navigation'
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator'
-import TransitionConfigs from 'react-navigation/src/views/CardStack/TransitionConfigs'
 import { DefaultNavigationRendererPropTypes } from './PropTypes'
 
 const NativeAnimatedModule = NativeModules && NativeModules.NativeAnimatedModule
@@ -60,7 +58,7 @@ export default class DefaultNavigationRenderer extends React.Component {
   configureTransition = (transitionProps, prevTransitionProps) => {
     const isModal = this.props.mode === 'modal'
     const transitionSpec = {
-      ...TransitionConfigs.getTransitionConfig(
+      ...StackViewTransitionConfigs.getTransitionConfig(
         undefined,
         transitionProps,
         prevTransitionProps,
@@ -68,8 +66,7 @@ export default class DefaultNavigationRenderer extends React.Component {
       ).transitionSpec,
     }
     if (
-      !!NativeAnimatedModule &&
-      CardStackStyleInterpolator.canUseNativeDriver()
+      !!NativeAnimatedModule
     ) {
       transitionSpec.useNativeDriver = true
     }
@@ -92,7 +89,7 @@ export default class DefaultNavigationRenderer extends React.Component {
       transitionConfig,
     } = cardStackProps
     return (
-      <CardStack
+      <StackView
         screenProps={screenProps}
         headerMode={headerMode}
         headerTransitionPreset={headerTransitionPreset}
@@ -121,21 +118,7 @@ export default class DefaultNavigationRenderer extends React.Component {
         configureTransition={configureTransition || this.configureTransition}
         onTransitionStart={onTransitionStart}
         onTransitionEnd={onTransitionEnd}
-        navigation={addNavigationHelpers({
-          state: {
-            ...navigationState,
-            routes: navigationState.routes.map(route => ({
-              ...route,
-              routeName: route.name,
-            })),
-          },
-          addListener: () => ({}),
-          dispatch: action => {
-            if (action.type === NavigationActions.back().type) {
-              onNavigateBack()
-            }
-          },
-        })}
+        navigation={this.props.navigation}
       />
     )
   }

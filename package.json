@@ -30,7 +30,6 @@
   "homepage": "https://github.com/winoteam/react-router-navigation#readme",
   "devDependencies": {
     "babel-eslint": "7.2.3",
-    "babel-jest": "18.0.0",
     "child_process": "^1.0.2",
     "eslint": "4.10.0",
     "eslint-config-react-app": "^2.0.1",
@@ -44,6 +43,9 @@
     "prettier": "^1.13.5",
     "pretty-quick": "^1.6.0",
     "trash-cli": "^1.4.0"
+  },
+  "resolutions": {
+    "react-navigation": "^2.18.3"
   },
   "workspaces": {
     "packages": [
